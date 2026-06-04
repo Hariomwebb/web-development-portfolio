@@ -1,0 +1,5 @@
+{
+  "framework": "create-react-app",
+  "buildCommand": "rm -rf build && cd deployment-assignment/client/client && npm install && npm run build && cd ../../.. && cp -R deployment-assignment/client/client/build ./build",
+  "outputDirectory": "build"
+}

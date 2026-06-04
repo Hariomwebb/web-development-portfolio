@@ -99,6 +99,8 @@ The frontend will run here:
 http://localhost:3000
 ```
 
+On Windows, the project folder contains `&` in its name. The React scripts are configured to run through `node` directly, so `npm start` works from this folder.
+
 ## Full Backend Mode
 
 The project also has a full backend flow with MongoDB, Redis, BullMQ, AWS SSM, and AWS Lambda.

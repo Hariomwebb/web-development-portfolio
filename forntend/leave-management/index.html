@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LeaveHub | Leave Management</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#mainContent">Skip to main content</a>
+
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">LH</span>
+          <div>
+            <strong>LeaveHub</strong>
+            <span>People Operations</span>
+          </div>
+        </div>
+
+        <nav class="nav-list" aria-label="Workspace">
+          <a class="nav-link active" href="#overview">Overview</a>
+          <a class="nav-link" href="#requestForm">New Request</a>
+          <a class="nav-link" href="#requests">Requests</a>
+          <a class="nav-link" href="#teamCalendar">Team Calendar</a>
+        </nav>
+
+        <div class="sidebar-note">
+          <span>Policy Window</span>
+          <strong>Apr 2026 - Mar 2027</strong>
+          <p>Carry forward closes on 31 March. Pending requests need manager review within two working days.</p>
+        </div>
+      </aside>
+
+      <main id="mainContent" class="main-panel">
+        <header class="topbar">
+          <div>
+            <span class="eyebrow">Employee self-service</span>
+            <h1>Leave management</h1>
+          </div>
+          <div class="topbar-actions">
+            <button class="secondary-button" type="button" id="downloadButton">Download Report</button>
+            <button class="primary-button" type="button" id="openRequestButton">Request Leave</button>
+          </div>
+        </header>
+
+        <section id="overview" class="balance-grid" aria-label="Leave balances">
+          <article class="balance-card">
+            <span>Annual Leave</span>
+            <strong>14.5 days</strong>
+            <small>6 days used</small>
+          </article>
+          <article class="balance-card">
+            <span>Sick Leave</span>
+            <strong>8 days</strong>
+            <small>2 days used</small>
+          </article>
+          <article class="balance-card">
+            <span>Work From Home</span>
+            <strong>10 days</strong>
+            <small>4 days used</small>
+          </article>
+          <article class="balance-card">
+            <span>Pending Approval</span>
+            <strong id="pendingCount">3</strong>
+            <small>Across all teams</small>
+          </article>
+        </section>
+
+        <section class="workspace-grid">
+          <article class="panel request-panel">
+            <div class="panel-heading">
+              <div>
+                <h2 id="requestForm">New leave request</h2>
+                <p>Submit planned time off for manager approval.</p>
+              </div>
+              <span class="status-pill neutral">Draft</span>
+            </div>
+
+            <form class="request-form" id="leaveForm">
+              <div class="field-grid">
+                <label for="employeeName">
+                  Employee
+                  <input id="employeeName" name="employeeName" type="text" value="Ananya Rao" required />
+                </label>
+
+                <label for="leaveType">
+                  Leave type
+                  <select id="leaveType" name="leaveType" required>
+                    <option value="Annual Leave">Annual Leave</option>
+                    <option value="Sick Leave">Sick Leave</option>
+                    <option value="Work From Home">Work From Home</option>
+                    <option value="Personal Leave">Personal Leave</option>
+                  </select>
+                </label>
+
+                <label for="startDate">
+                  Start date
+                  <input id="startDate" name="startDate" type="date" required />
+                </label>
+
+                <label for="endDate">
+                  End date
+                  <input id="endDate" name="endDate" type="date" required />
+                </label>
+              </div>
+
+              <label for="reason">
+                Reason
+                <textarea id="reason" name="reason" rows="4" placeholder="Short note for your manager" required></textarea>
+              </label>
+
+              <div class="form-footer">
+                <p id="formHint">Leave duration is calculated after both dates are selected.</p>
+                <button class="primary-button" type="submit">Submit Request</button>
+              </div>
+            </form>
+          </article>
+
+          <aside id="teamCalendar" class="panel calendar-panel" aria-labelledby="calendarTitle">
+            <div class="panel-heading">
+              <div>
+                <h2 id="calendarTitle">Team calendar</h2>
+                <p>Upcoming approved absences.</p>
+              </div>
+            </div>
+
+            <div class="calendar-list" id="calendarList"></div>
+          </aside>
+        </section>
+
+        <section id="requests" class="panel requests-panel" aria-labelledby="requestsTitle">
+          <div class="panel-heading">
+            <div>
+              <h2 id="requestsTitle">Leave requests</h2>
+              <p>Review status, owners, and requested dates.</p>
+            </div>
+
+            <div class="toolbar">
+              <label for="statusFilter" class="visually-hidden">Filter by status</label>
+              <select id="statusFilter">
+                <option value="all">All statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+
+              <label class="search-box" for="searchInput">
+                <span aria-hidden="true">Search</span>
+                <input id="searchInput" type="search" placeholder="Name or leave type" />
+              </label>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <caption class="visually-hidden">Employee leave request status table</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Employee</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Dates</th>
+                  <th scope="col">Days</th>
+                  <th scope="col">Manager</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody id="requestTable"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>

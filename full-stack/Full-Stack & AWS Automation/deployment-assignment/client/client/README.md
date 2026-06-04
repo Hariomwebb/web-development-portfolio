@@ -1,80 +1,71 @@
-# Hosting Control Panel — Frontend
+# Hosting Control Panel Frontend
 
-React UI for the hosting control panel assignment. Built with [Create React App](https://github.com/facebook/create-react-app).
+This is the React frontend for the Hosting Control Panel project.
 
-## Prerequisites
+It provides an admin form to submit deployment details and a live status panel that polls the backend API.
 
-The Express backend must be running first:
+## What It Uses
 
-```bash
-# From workspace root
+- React.js
+- Create React App
+- CSS
+- Fetch API
+
+## Main Files
+
+```text
+src/App.js       Main form, deploy request, and status polling
+src/App.css      Dashboard layout and status styles
+src/index.js     React app entry point
+```
+
+## Run The Frontend
+
+Start the backend first from the main project folder:
+
+```powershell
+cd "full-stack\Full-Stack & AWS Automation"
+npm run demo
+```
+
+Then open a second terminal and start the frontend:
+
+```powershell
+cd "full-stack\Full-Stack & AWS Automation\deployment-assignment\client\client"
 npm start
 ```
 
-Backend URL: **http://localhost:5000**
+Open:
 
-## Run locally
+```text
+http://localhost:3000
+```
+
+## Git Bash Commands
 
 ```bash
-npm install
+cd "/c/Users/hario/Documents/GitHub/web-development-portfolio/full-stack/Full-Stack & AWS Automation/deployment-assignment/client/client"
 npm start
 ```
 
-Open **http://localhost:3000**.
+## API Used By The Frontend
 
-## What this app does
-
-| UI element | Behavior |
-|------------|----------|
-| Client Name | Text input, required |
-| Domain | Text input, required |
-| Docker Image | Text input, required |
-| Deploy | `POST` form data to `/api/deploy` |
-| Status card | Shown after deploy; displays ID and current status |
-
-After deploy:
-
-1. Receives deployment `id` from the API.
-2. Sets status to `Pending`.
-3. Polls `GET /api/status/:id` immediately, then every **2 seconds** via `setInterval`.
-4. Stops polling when status is `Completed` or `Failed`.
-
-## Key files
-
-- `src/App.js` — form, deploy handler, status polling (`useEffect` + `setInterval`)
-- `src/App.css` — layout and status styling (Pending / Completed / Failed chips)
-
-## API calls
-
-**Start deployment:**
+Create deployment:
 
 ```http
 POST http://localhost:5000/api/deploy
-Content-Type: application/json
-
-{
-  "clientName": "...",
-  "domain": "...",
-  "image": "..."
-}
 ```
 
-**Poll status:**
+Check deployment status:
 
 ```http
 GET http://localhost:5000/api/status/:id
 ```
 
-## Scripts
+## Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm start` | Development server (port 3000) |
-| `npm test` | Run tests (CRA default) |
-| `npm run build` | Production build to `build/` |
-
-## Troubleshooting
-
-- **Network error on deploy** — Start the backend (`npm start` from workspace root).
-- **Status stuck on Pending** — Confirm backend logs show deployment steps; full cycle takes ~5 seconds.
-- **CORS issues** — Backend enables CORS for local development; keep frontend on port 3000 and API on 5000.
+```text
+npm start       Run the development server
+npm run build   Create a production build
+npm test        Run tests
+```

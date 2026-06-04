@@ -44,7 +44,11 @@ full-stack/
 
 ## Run The Project Locally
 
-Open a terminal in this folder:
+Use two terminals: one for the backend API and one for the React frontend.
+
+### PowerShell Commands
+
+Open Terminal 1 in this folder:
 
 ```powershell
 cd "full-stack\Full-Stack & AWS Automation"
@@ -64,7 +68,7 @@ npm install
 cd "..\..\.."
 ```
 
-### 1. Start The Demo API
+Start the demo API:
 
 This runs the backend in local demo mode. It does not need MongoDB, Redis, or AWS.
 
@@ -84,9 +88,7 @@ Health check:
 http://localhost:5000/api/health
 ```
 
-### 2. Start The React Frontend
-
-Open a second terminal:
+Open Terminal 2 for the frontend:
 
 ```powershell
 cd "full-stack\Full-Stack & AWS Automation\deployment-assignment\client\client"
@@ -100,6 +102,28 @@ http://localhost:3000
 ```
 
 On Windows, the project folder contains `&` in its name. The React scripts are configured to run through `node` directly, so `npm start` works from this folder.
+
+### Git Bash Commands
+
+Backend demo API:
+
+```bash
+cd "/c/Users/hario/Documents/GitHub/web-development-portfolio/full-stack/Full-Stack & AWS Automation"
+npm run demo
+```
+
+React frontend:
+
+```bash
+cd "/c/Users/hario/Documents/GitHub/web-development-portfolio/full-stack/Full-Stack & AWS Automation/deployment-assignment/client/client"
+npm start
+```
+
+Important:
+
+- Run `npm run demo` from `full-stack/Full-Stack & AWS Automation`
+- Run `npm start` from `deployment-assignment/client/client`
+- Do not run `npm run demo` inside the React client folder
 
 ## Full Backend Mode
 

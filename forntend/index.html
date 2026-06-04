@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClientFlow CRM</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <div class="brand">
+          <span class="brand-mark">CF</span>
+          <div>
+            <strong>ClientFlow</strong>
+            <span>Agency CRM</span>
+          </div>
+        </div>
+
+        <nav class="nav-list">
+          <button class="nav-item active" type="button" data-view="dashboard">
+            <span aria-hidden="true">□</span>
+            Dashboard
+          </button>
+          <button class="nav-item" type="button" data-view="pipeline">
+            <span aria-hidden="true">◇</span>
+            Pipeline
+          </button>
+          <button class="nav-item" type="button" data-view="accounts">
+            <span aria-hidden="true">○</span>
+            Accounts
+          </button>
+          <button class="nav-item" type="button" data-view="reports">
+            <span aria-hidden="true">△</span>
+            Reports
+          </button>
+        </nav>
+
+        <div class="sidebar-card">
+          <span>Next Review</span>
+          <strong>Friday, 10:30 AM</strong>
+          <p>Quarterly renewal meeting with Orbit Retail.</p>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div>
+            <span class="eyebrow">Revenue operations</span>
+            <h1>Client account workspace</h1>
+          </div>
+
+          <div class="topbar-actions">
+            <label class="search-box">
+              <span aria-hidden="true">⌕</span>
+              <input id="searchInput" type="search" placeholder="Search accounts" />
+            </label>
+            <button class="icon-button" type="button" aria-label="Notifications">!</button>
+            <button class="primary-button" type="button" id="newDealButton">New Deal</button>
+          </div>
+        </header>
+
+        <section class="metrics-grid" aria-label="Business metrics">
+          <article class="metric-card">
+            <span>Pipeline Value</span>
+            <strong>$284.6K</strong>
+            <small>+12.4% this month</small>
+          </article>
+          <article class="metric-card">
+            <span>Active Clients</span>
+            <strong>48</strong>
+            <small>7 need attention</small>
+          </article>
+          <article class="metric-card">
+            <span>Win Rate</span>
+            <strong>64%</strong>
+            <small>Above target by 8%</small>
+          </article>
+          <article class="metric-card">
+            <span>Avg. Response</span>
+            <strong>3.2h</strong>
+            <small>Down from 5.1h</small>
+          </article>
+        </section>
+
+        <section class="work-grid">
+          <article class="panel pipeline-panel">
+            <div class="panel-header">
+              <div>
+                <h2>Deal Pipeline</h2>
+                <p>Qualified opportunities by current stage.</p>
+              </div>
+              <select id="stageFilter" aria-label="Filter deals by stage">
+                <option value="all">All stages</option>
+                <option value="Proposal">Proposal</option>
+                <option value="Negotiation">Negotiation</option>
+                <option value="Won">Won</option>
+              </select>
+            </div>
+
+            <div class="pipeline-board" id="pipelineBoard"></div>
+          </article>
+
+          <aside class="panel focus-panel">
+            <div class="panel-header">
+              <div>
+                <h2>Today</h2>
+                <p>Priority follow-ups and meetings.</p>
+              </div>
+            </div>
+            <div class="task-list" id="taskList"></div>
+          </aside>
+        </section>
+
+        <section class="panel accounts-panel">
+          <div class="panel-header">
+            <div>
+              <h2>Client Accounts</h2>
+              <p>Health, owner, and commercial status.</p>
+            </div>
+            <div class="segmented-control" aria-label="Account status filter">
+              <button class="segment active" type="button" data-filter="all">All</button>
+              <button class="segment" type="button" data-filter="healthy">Healthy</button>
+              <button class="segment" type="button" data-filter="risk">At Risk</button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Client</th>
+                  <th>Owner</th>
+                  <th>Plan</th>
+                  <th>Health</th>
+                  <th>Renewal</th>
+                  <th>ARR</th>
+                </tr>
+              </thead>
+              <tbody id="accountTable"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>

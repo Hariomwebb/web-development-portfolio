@@ -1,93 +1,144 @@
 # Hosting Control Panel
 
-Full-stack assignment for automating client onboarding on a hosting platform.
+This is a full-stack project for client deployment automation.
 
-## What It Includes
+The app lets an admin submit a client name, domain, and Docker image. After submission, the UI shows the deployment status and keeps checking the API until the deployment is completed or failed.
 
-- React control panel with client onboarding form and live polling dashboard
-- Node.js/Express API
-- MongoDB persistence for deployment records
-- Redis/BullMQ background queue
-- Worker process that runs Docker deployment commands on EC2 through AWS SSM
-- AWS SDK v3 Lambda invocation for post-deployment setup
-- Local `DEPLOYMENT_MODE=mock` so the reviewer can demo the flow without AWS credentials
+## What This Project Does
 
-## Project Structure
+- Shows a React admin dashboard
+- Accepts client deployment details
+- Sends deployment data to a Node.js API
+- Tracks deployment status
+- Shows deployment events in the UI
+- Supports a simple local demo mode without MongoDB, Redis, or AWS
+- Also includes full backend code for MongoDB, Redis/BullMQ, AWS SSM, and AWS Lambda
 
-```text
-deployment-assignment/
-  server/
-    server.js              Express API
-    worker.js              BullMQ deployment worker
-    queue.js               Redis/BullMQ connection
-    db.js                  MongoDB connection
-    models/Deployment.js   Deployment schema
-  client/client/           React app
-```
+## Tech Used
 
-## Prerequisites
-
-- Node.js 18+
+- React.js
+- Node.js
+- Express.js
 - MongoDB
 - Redis
-- Optional: Docker Compose for local MongoDB and Redis
-- Optional for real AWS mode: AWS credentials with SSM and Lambda permissions
+- BullMQ
+- Docker Compose
+- AWS SDK
+- AWS SSM
+- AWS Lambda
+- Vercel serverless API demo routes
 
-## Setup
+## Folder Structure
 
-Install backend dependencies from the workspace root:
+```text
+full-stack/
+  Full-Stack & AWS Automation/
+    api/                         Vercel demo API routes
+    deployment-assignment/
+      client/client/             React frontend
+      server/                    Express backend and worker
+    docker-compose.yml           MongoDB and Redis services
+    package.json                 Backend scripts
+    vercel.json                  Vercel build config
+```
 
-```bash
+## Run The Project Locally
+
+Open a terminal in this folder:
+
+```powershell
+cd "full-stack\Full-Stack & AWS Automation"
+```
+
+Install backend dependencies:
+
+```powershell
 npm install
 ```
 
 Install frontend dependencies:
 
-```bash
-cd deployment-assignment/client/client
+```powershell
+cd "deployment-assignment\client\client"
 npm install
+cd "..\..\.."
 ```
 
-Create environment config:
+### 1. Start The Demo API
 
-```bash
-copy .env.example .env
+This runs the backend in local demo mode. It does not need MongoDB, Redis, or AWS.
+
+```powershell
+npm run demo
 ```
 
-For local services:
+The API will run here:
 
-```bash
-docker compose up -d
+```text
+http://localhost:5000
 ```
 
-## Run Locally
+Health check:
 
-Terminal 1, API:
-
-```bash
-npm run server
+```text
+http://localhost:5000/api/health
 ```
 
-Terminal 2, worker:
+### 2. Start The React Frontend
 
-```bash
-npm run worker
-```
+Open a second terminal:
 
-Terminal 3, React:
-
-```bash
-cd deployment-assignment/client/client
+```powershell
+cd "full-stack\Full-Stack & AWS Automation\deployment-assignment\client\client"
 npm start
 ```
 
-Open `http://localhost:3000`.
+The frontend will run here:
 
-## API
+```text
+http://localhost:3000
+```
 
-### `POST /api/deploy`
+## Full Backend Mode
 
-Creates a deployment as `Pending`, stores it in MongoDB, pushes a BullMQ job, and responds immediately.
+The project also has a full backend flow with MongoDB, Redis, BullMQ, AWS SSM, and AWS Lambda.
+
+Start MongoDB and Redis:
+
+```powershell
+docker compose up -d
+```
+
+Start the API:
+
+```powershell
+npm run server
+```
+
+Start the worker:
+
+```powershell
+npm run worker
+```
+
+For real AWS deployment, add AWS values in an `.env` file:
+
+```text
+DEPLOYMENT_MODE=aws
+AWS_REGION=ap-south-1
+EC2_INSTANCE_ID=your-ec2-instance-id
+LAMBDA_FUNCTION_NAME=your-lambda-function-name
+```
+
+## API Routes
+
+Create a deployment:
+
+```http
+POST /api/deploy
+```
+
+Request body:
 
 ```json
 {
@@ -97,40 +148,15 @@ Creates a deployment as `Pending`, stores it in MongoDB, pushes a BullMQ job, an
 }
 ```
 
-Response:
+Check deployment status:
 
-```json
-{
-  "id": "6655f8d0f4a0a77c1c845f2d",
-  "status": "Pending"
-}
+```http
+GET /api/status/:id
 ```
 
-### `GET /api/status/:id`
+## Notes
 
-Returns the current deployment record and event trail.
-
-Statuses: `Pending`, `Running`, `Completed`, `Failed`.
-
-## AWS Mode
-
-Set this in `.env`:
-
-```bash
-DEPLOYMENT_MODE=aws
-AWS_REGION=ap-south-1
-EC2_INSTANCE_ID=i-xxxxxxxxxxxxxxxxx
-LAMBDA_FUNCTION_NAME=post-deployment-setup
-```
-
-The worker sends shell commands to the EC2 instance with SSM `SendCommandCommand`:
-
-- `docker pull <image>`
-- remove any existing container for that deployment
-- run the container with labels for host-based routing by domain
-
-Then the worker invokes Lambda with AWS SDK v3 `InvokeCommand`.
-
-## Notes For Review
-
-`DEPLOYMENT_MODE=mock` is the default so the full queue and status lifecycle can be tested without real AWS infrastructure. The code path for `DEPLOYMENT_MODE=aws` uses AWS SSM and Lambda clients directly and will work after valid AWS credentials, EC2 instance ID, and Lambda function name are provided.
+- Use demo mode first for easy testing.
+- Demo mode gives fake deployment progress for local testing.
+- Full backend mode needs MongoDB and Redis.
+- AWS mode needs valid AWS credentials and AWS resource IDs.

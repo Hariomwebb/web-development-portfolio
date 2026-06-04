@@ -19,6 +19,8 @@ This repository contains my professional web development projects, including Fro
 
 ## Featured Projects
 
+- [Full-Stack & AWS Automation](full-stack/Full-Stack%20%26%20AWS%20Automation/README.md)
+- [LeaveHub Leave Management](forntend/leave-management/README.md)
 - Shopify E-commerce Solutions
 - React Applications
 - Next.js Projects

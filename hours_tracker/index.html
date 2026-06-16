@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hours tracker</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+<div class="wrap">
+      <h2 class="sr-only">Hours tracker with over-budget alerts</h2>
+
+      <header class="app-header">
+        <div>
+          <div class="eyebrow">Work hours</div>
+          <h1 class="app-title">Hours tracker</h1>
+          <p class="app-subtitle">
+            Tasks ke total, spent, remaining aur over-budget status ek clean dashboard mein track karo.
+          </p>
+        </div>
+        <div class="header-chip">
+          <i class="ti ti-calendar-time" aria-hidden="true"></i>
+          30-day local save
+        </div>
+      </header>
+
+      <div class="top-cards">
+        <div class="card">
+          <div class="card-label">Total hours</div>
+          <div class="card-val" id="s-total">0</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Spent hours</div>
+          <div class="card-val spent" id="s-spent">0</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Remaining hours</div>
+          <div class="card-val left" id="s-left">0</div>
+        </div>
+        <div class="card" id="card-over">
+          <div class="card-label">Over budget</div>
+          <div class="card-val over" id="s-over">0</div>
+        </div>
+      </div>
+
+      <div class="form-area">
+        <div class="form-title">
+          <i class="ti ti-pencil" aria-hidden="true"></i>
+          <span>Hours entry karo</span>
+        </div>
+        <div class="form-grid">
+          <div class="field autocomplete-wrap">
+            <label
+              >Task name <span id="mode-label" class="mode-label"></span
+            ></label>
+            <input
+              type="text"
+              id="f-name"
+              placeholder="Task name likho ya dhundho..."
+              autocomplete="off"
+              oninput="onNameInput()"
+              onblur="hideDropdown()"
+            />
+            <div class="dropdown" id="dropdown" style="display: none"></div>
+          </div>
+          <div class="field">
+            <label>Total hours</label>
+            <input
+              type="number"
+              id="f-total"
+              placeholder="40"
+              min="1"
+              oninput="onTotalChange()"
+            />
+          </div>
+          <div class="field">
+            <label>Spend hrs (aaj)</label>
+            <input
+              type="number"
+              id="f-spend"
+              placeholder="e.g. 3"
+              min="0.5"
+              step="0.5"
+              oninput="previewOvercheck()"
+            />
+          </div>
+          <div class="field">
+            <label>Note (optional)</label>
+            <input type="text" id="f-note" placeholder="kya kiya aaj..." />
+          </div>
+          <button class="btn primary" onclick="submitEntry()">
+            <i class="ti ti-check" aria-hidden="true"></i> Save
+          </button>
+        </div>
+
+        <div class="info-strip" id="info-strip">
+          <div class="info-chip">
+            <span>Total</span>
+            <span class="val" id="is-total">-</span>
+          </div>
+          <div class="info-chip">
+            <span>Spent so far</span>
+            <span class="green" id="is-spent">-</span>
+          </div>
+          <div class="info-chip">
+            <span>Remaining</span>
+            <span id="is-left">-</span>
+          </div>
+          <div class="info-chip" id="is-over-chip" style="display: none">
+            <span>Over by</span>
+            <span class="red" id="is-over-val">-</span>
+          </div>
+          <div style="flex: 1">
+            <div
+              style="
+                font-size: 11px;
+                color: var(--color-text-secondary);
+                margin-bottom: 3px;
+              "
+              id="is-pct-label"
+            >
+              0%
+            </div>
+            <div class="mini-bar-bg">
+              <div class="mini-bar-fill" id="is-bar" style="width: 0%"></div>
+            </div>
+            <div class="over-warn" id="is-preview-over" style="display: none">
+              <i
+                class="ti ti-alert-triangle"
+                style="font-size: 13px"
+                aria-hidden="true"
+              ></i
+              ><span id="is-preview-text"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('tasks', this)">
+          Tasks
+        </button>
+        <button class="tab" onclick="switchTab('history', this)">
+          Log history
+        </button>
+      </div>
+
+      <div id="view-tasks">
+        <div class="table-area">
+          <table class="tbl">
+            <colgroup>
+              <col style="width: 26%" />
+              <col style="width: 12%" />
+              <col style="width: 12%" />
+              <col style="width: 16%" />
+              <col style="width: 20%" />
+              <col style="width: 14%" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>Task name</th>
+                <th>Total</th>
+                <th>Spend</th>
+                <th>Left / Over</th>
+                <th>Progress</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="task-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="view-history" style="display: none">
+        <div class="table-area">
+          <table class="tbl">
+            <colgroup>
+              <col style="width: 20%" />
+              <col style="width: 12%" />
+              <col style="width: 22%" />
+              <col style="width: 32%" />
+              <col style="width: 14%" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Hours</th>
+                <th>Task</th>
+                <th>Note</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="history-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+  </body>
+</html>

@@ -19,6 +19,7 @@ This repository contains my professional web development projects, including Fro
 
 ## Featured Projects
 
+- [Dinesh Bike Point](frontend/dinesh-bike-point/README.md)
 - Shopify E-commerce Solutions
 - React Applications
 - Next.js Projects
